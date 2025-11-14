@@ -1,0 +1,437 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Object-C基础 | ReturnTolife</title><meta name="author" content="何方神圣tolife"><meta name="copyright" content="何方神圣tolife"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="OC与C语言的关系OC是C语言的扩展，OC完全兼容C语言  OC支持C语言的所有变量类型 OC支持C语言的条件语句 OC支持C语言的关键字  常见关键字OC中除了支持C语言的关键字之外，它还有自己特有的关键字，通常都以@开头 importimport是c语言中#include的加强版  include: 每次调用都会拷贝一份代码 import : 多次引用同一个文件只会拷贝一次  导入文件的方式：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Object-C基础">
+<meta property="og:url" content="https://dongdian455.github.io/2025/11/14/blogs-main/IOS/Object-C%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:site_name" content="ReturnTolife">
+<meta property="og:description" content="OC与C语言的关系OC是C语言的扩展，OC完全兼容C语言  OC支持C语言的所有变量类型 OC支持C语言的条件语句 OC支持C语言的关键字  常见关键字OC中除了支持C语言的关键字之外，它还有自己特有的关键字，通常都以@开头 importimport是c语言中#include的加强版  include: 每次调用都会拷贝一份代码 import : 多次引用同一个文件只会拷贝一次  导入文件的方式：">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://dongdian455.github.io/img/blog_avatar.png">
+<meta property="article:published_time" content="2025-11-14T02:52:30.071Z">
+<meta property="article:modified_time" content="2025-11-14T02:52:30.071Z">
+<meta property="article:author" content="何方神圣tolife">
+<meta property="article:tag" content="ReturnTolife">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://dongdian455.github.io/img/blog_avatar.png"><link rel="shortcut icon" href="/img/blog_avatar.png"><link rel="canonical" href="https://dongdian455.github.io/2025/11/14/blogs-main/IOS/Object-C%E5%9F%BA%E7%A1%80/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Object-C基础',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-11-14 10:52:30'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load',() => { preloader.endLoading() })
+
+  if (false) {
+    document.addEventListener('pjax:send', () => { preloader.initLoading() })
+    document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+  }
+})()</script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/blog_avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">37</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">13</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="ReturnTolife"><span class="site-name">ReturnTolife</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">Object-C基础</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-11-14T02:52:30.071Z" title="发表于 2025-11-14 10:52:30">2025-11-14</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-11-14T02:52:30.071Z" title="更新于 2025-11-14 10:52:30">2025-11-14</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/IOS/">IOS</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Object-C基础"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="post-content" id="article-container"><h1 id="OC与C语言的关系"><a href="#OC与C语言的关系" class="headerlink" title="OC与C语言的关系"></a>OC与C语言的关系</h1><p>OC是C语言的扩展，<font color=#c7254e>OC完全兼容C语言</font></p>
+<ul>
+<li>OC支持C语言的所有变量类型</li>
+<li>OC支持C语言的条件语句</li>
+<li>OC支持C语言的关键字</li>
+</ul>
+<h1 id="常见关键字"><a href="#常见关键字" class="headerlink" title="常见关键字"></a>常见关键字</h1><p>OC中除了支持C语言的关键字之外，它还有自己特有的关键字，通常都以<code>@开头</code></p>
+<h2 id="import"><a href="#import" class="headerlink" title="import"></a>import</h2><p>import是c语言中#include的加强版</p>
+<ul>
+<li>include: 每次调用都会拷贝一份代码</li>
+<li>import : 多次引用同一个文件只会拷贝一次</li>
+</ul>
+<p>导入文件的方式：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">第一种：</span><br><span class="line">#import &lt;Foundation/Foundation.h&gt;</span><br><span class="line"></span><br><span class="line">第二种:</span><br><span class="line">#import &quot;Persion.h&quot;</span><br><span class="line"></span><br><span class="line">第三种：</span><br><span class="line">@import UIKit;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>双引号</code>适用于本地文件（自己创建的文件）<br><code>&lt;&gt;</code>适用指定的系统目录下查找对应的文件<br><code>@import</code> 适用模块，能够提高速度和避免命名冲突</p>
+</blockquote>
+<h2 id="class"><a href="#class" class="headerlink" title="@class"></a>@class</h2><p><code>@class</code>与<code>#import</code>对比：<code>@class</code>只是让当前文件只是某个类名，具体类信息仍然不清楚。<br>使用@class指令会提高编译效率，因为不需要引入和处理整个类文件。</p>
+<h2 id="autoreleasepool"><a href="#autoreleasepool" class="headerlink" title="@autoreleasepool"></a>@autoreleasepool</h2><p>Objective-C 中用于管理内存的一种机制。它创建一个自动释放池，确保在池的作用域内创建的对象在使用完后能够被及时释放，从而避免内存泄漏。</p>
+<h2 id="static"><a href="#static" class="headerlink" title="static"></a>static</h2><p>OC中的static不能修饰类属性和类的方法，但是可以在方法内外修饰变量,使得变量存储在常量池中。</p>
+<ul>
+<li>声明在方法内： 只能在方法类进行访问</li>
+<li>声明在方法外： 所有的方法都可以访问<blockquote>
+<p>声明在一个类的方法内，那么同类名的访问都是同一个属性，如下：</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">@implementation Persion</span><br><span class="line"></span><br><span class="line">@synthesize name;</span><br><span class="line"></span><br><span class="line">-(void) printName&#123;</span><br><span class="line">    static int methodCount = 0;</span><br><span class="line">    </span><br><span class="line">    NSLog(@&quot;persion name :%@ count: %d&quot;,name,methodCount);</span><br><span class="line">    </span><br><span class="line">    methodCount = methodCount + 1;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">int main(int argc, const char * argv[]) &#123;</span><br><span class="line">    </span><br><span class="line">  </span><br><span class="line">    @autoreleasepool &#123;</span><br><span class="line">        // insert code here...</span><br><span class="line">        NSLog(@&quot;Hello, World!&quot;);</span><br><span class="line">        </span><br><span class="line">        NSLog(@&quot;Number of arguments: %d&quot;, argc);</span><br><span class="line">        for (int i = 0; i &lt; argc; i++) &#123;</span><br><span class="line">            NSLog(@&quot;Argument %d: %s&quot;, i, argv[i]);</span><br><span class="line">        &#125;</span><br><span class="line">     </span><br><span class="line">        int t = 5;</span><br><span class="line">        NSLog(@&quot;test t=%i&quot;,t);</span><br><span class="line">        </span><br><span class="line">        Persion* persion = [[Persion alloc] init];</span><br><span class="line">        persion.name = @&quot;hjj&quot;;</span><br><span class="line">        [persion printName];</span><br><span class="line">        [persion printName];</span><br><span class="line">    </span><br><span class="line">        Persion* persion2 = [[Persion alloc] init];</span><br><span class="line">        persion2.name = @&quot;hjj2&quot;;</span><br><span class="line">        [persion2 printName];</span><br><span class="line">        [persion2 printName];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="selector"><a href="#selector" class="headerlink" title="selector"></a>selector</h2><p>在 Objective-C 中，​​Selector（选择器）​​ 是一种特殊的类型（SEL），用于表示一个方法的名称（方法签名），类似于函数指针的概念。它不包含方法的实现，只代表方法的“名字”，用于在运行时动态调用方法。</p>
+<p>判断selector是否存在</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[类实例 responsToSelector:@selector(sayHi)]</span><br></pre></td></tr></table></figure>
+
+<p>调用selector</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[类实例 performSelector:@selector(printAllInfo:and:) withObject:x withObject:y];</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：使用performSelector调用的方法，参数必须是非基本类型</p>
+</blockquote>
+<h1 id="其他特性"><a href="#其他特性" class="headerlink" title="其他特性"></a>其他特性</h1><h2 id="Foundation框架"><a href="#Foundation框架" class="headerlink" title="Foundation框架"></a>Foundation框架</h2><p>Foundation是oc中的基础库，类似c语言的函数库</p>
+<h2 id="NSString"><a href="#NSString" class="headerlink" title="NSString"></a>NSString</h2><p>NSString是oc特有的字符串类型，用于存放oc中的字符串常量。<br>需要以‘@’为开头：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NSString *str = @&quot;this is a string var&quot;;</span><br></pre></td></tr></table></figure>
+<p>再使用占位符的时候，需要使用的是<code>%@</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">NSString *str = @&quot;this is a string var&quot;;</span><br><span class="line">NSLog(@&quot;大家好我是%@&quot;,str);</span><br></pre></td></tr></table></figure>
+
+<h2 id="nill和NULL"><a href="#nill和NULL" class="headerlink" title="nill和NULL"></a>nill和NULL</h2><p>nill和NULL意义一样，但是通常区分使用场景</p>
+<ul>
+<li>nill : OC的类指针</li>
+<li>NULL : C指针</li>
+</ul>
+<h2 id="结构体与类的访问速度"><a href="#结构体与类的访问速度" class="headerlink" title="结构体与类的访问速度"></a>结构体与类的访问速度</h2><p>属性较少的结构体访问速度较快</p>
+<h2 id="点语法"><a href="#点语法" class="headerlink" title="点语法"></a>点语法</h2><p>OC可以与Java一样使用.来访问属性，但是必须去掉属性的下划线</p>
+<blockquote>
+<p>点语法在编译期间，会自动调用setter&#x2F;getter方法</p>
+</blockquote>
+<h2 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h2><p>一个普通类</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@interface Person : NSObject</span><br><span class="line"></span><br><span class="line">@property NSString* name;</span><br><span class="line">-(void) printName;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>类扩展,添加一个新的方法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">@interface Person (Teacher)</span><br><span class="line"></span><br><span class="line">-(void) printTeacher;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>类似扩展方法<br>如果（）中不定义名称，则扩展后的方法都是私有的，如：</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">@interface Person (Teacher)</span><br><span class="line"></span><br><span class="line">-(void) printTeacher;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+
+<h2 id="sizeof函数"><a href="#sizeof函数" class="headerlink" title="sizeof函数"></a>sizeof函数</h2><p>可以查看变量占用的内存大小，单位为<code>字节</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">int x = 10;</span><br><span class="line">NSLog(@&quot;result: %lu&quot;,sizeof(x));</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>打印4 （取决于系统）</p>
+</blockquote>
+<h1 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h1><h2 id="类的声明和定义"><a href="#类的声明和定义" class="headerlink" title="类的声明和定义"></a>类的声明和定义</h2><p>OC与C语言一样，需要区分声明和定义，声明通常放在<code>头文件.h</code>, 定义放在<code>.m文件</code>。</p>
+<ul>
+<li>对象声明使用<code>@interface</code></li>
+<li>对象定义使用<code>@implementation</code></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">//Person.h 对象声明</span><br><span class="line">@interface Person：NSObject&#123;</span><br><span class="line">    //...</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">//Person.m 对象定义</span><br><span class="line">@implementation Person</span><br><span class="line">    //...</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//实例化方式</span><br><span class="line">//方式一</span><br><span class="line">Person *p = [Person new];</span><br><span class="line">//方式二</span><br><span class="line">Person *p = [[Person alloc] init];</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>alloc</code>方法只是分配内存空间，<code>init</code>方法才是真正的调用类的构造函数进行初始化</p>
+</blockquote>
+<h2 id="类的方法"><a href="#类的方法" class="headerlink" title="类的方法"></a>类的方法</h2><p>方法和类一样区分声明和定义。格式如下：<br><code>- (返回类型)方法名: (首个参数类型) 参数名1 形参名:(第二个参数类型)参数名2</code></p>
+<blockquote>
+<p>OC中的形参数名比较奇怪，它的作用应该是用于描述两个参数之间的关系，而不像swift那样是给参数起一个别名</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">//Person.h 方法声明</span><br><span class="line">-(void) run:(Int) speed;</span><br><span class="line">-(void) run:(Int) speed delay:(Int) delay</span><br><span class="line"></span><br><span class="line">//Person.m 方法定义</span><br><span class="line">- (void)run:(int)speed &#123;</span><br><span class="line">    NSLog(@&quot;这个在奔跑, speed: %d&quot;, speed);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">-(void) run:(Int) speed delay:(Int) delay</span><br><span class="line">&#123;</span><br><span class="line">    NSLog(@&quot;speed = %d, delay = %d&quot;, speed, delay);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//调用</span><br><span class="line">Person * p1 = [Person new];</span><br><span class="line">[p1 run:10];</span><br><span class="line">[p1 run:10 delay: 5];</span><br></pre></td></tr></table></figure>
+
+<h3 id="类方法与实例方法"><a href="#类方法与实例方法" class="headerlink" title="类方法与实例方法"></a>类方法与实例方法</h3><p>类方法的定义为将普通方法开头的<code>-</code>修改为<code>+</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">//Person.h 方法声明</span><br><span class="line">+(void) printPersonInfo:(Person *) p;</span><br><span class="line"></span><br><span class="line">//Person.m 方法定义</span><br><span class="line">+ (void)printPersonInfo:(Person *)p &#123;</span><br><span class="line">    if (!p) &#123;  // 检查对象是否为空</span><br><span class="line">        NSLog(@&quot;Person is nil&quot;);</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">    NSLog(@&quot;Person Info: name=%@, age=%ld&quot;, p.name, (long)p.age);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//调用</span><br><span class="line">Person *person = [[Person alloc] init];</span><br><span class="line">person.name = @&quot;张三&quot;;</span><br><span class="line">person.age = 25;</span><br><span class="line">[Person printPersonInfo:person]; </span><br></pre></td></tr></table></figure>
+
+<h3 id="类的方法访问限制"><a href="#类的方法访问限制" class="headerlink" title="类的方法访问限制"></a>类的方法访问限制</h3><ul>
+<li>oc的类方法，如果只定义了方法，没有方法的声明，那么方法就是私有的，<strong>只有类自身可以访问  (只在.m中实现,没有在.h声明）</strong></li>
+</ul>
+<h2 id="类的变量"><a href="#类的变量" class="headerlink" title="类的变量"></a>类的变量</h2><p>类的变量声明有两种</p>
+<ul>
+<li>传统的声明方式, 格式 :<code>（类型）变量名</code></li>
+<li>使用<code>@property</code>自动生成， 格式: <code>@property (类型)变量名</code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">//Person.h</span><br><span class="line">@interface Person : NSObject</span><br><span class="line">@property (nonatomic, copy) NSString *name;</span><br><span class="line">@property (nonatomic, assign) NSInteger age;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">//Person.m</span><br><span class="line">- (void)printName</span><br><span class="line">&#123;</span><br><span class="line">    NSLog(@&quot;name = %@&quot;,_name);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：</p>
+<ol>
+<li>使用<code>@property</code> 声明变量之后，编译器会自动生成以<font color=#c7254e>下划线开头</font>的sette和getter方法, 现在都是推荐这种方法。</li>
+<li>当外部访问类的成员的时候，通过<code>.</code>语法访问是不带下划线的，保持和.h中声明的一样，类内部访问则以下划线开头。</li>
+<li><strong>对象属性需要使用指针<code>*</code>声明</strong></li>
+</ol>
+</blockquote>
+</li>
+</ul>
+<h3 id="类变量的访问修饰符"><a href="#类变量的访问修饰符" class="headerlink" title="类变量的访问修饰符"></a>类变量的访问修饰符</h3><p>在传统的变量声明方式中，可以给属性添加以下访问符号<br><code>@public</code>,<code>@private</code>,<code>@@protected</code>,<code>@@package</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">@interface Person : NSObject&#123;</span><br><span class="line">    @public</span><br><span class="line">    NSString *_name;</span><br><span class="line">    @private</span><br><span class="line">    int age;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>修饰符的作用域是从变量定义的开始，直接遇到下一个修饰符或者结束括号</p>
+</blockquote>
+<p>而使用<code>@peoperty</code>关键字的情况下则不能使用上面的修饰符，只能通过别的方式限制:</p>
+<ol>
+<li>只在.m文件中声明变量，则外部无法访问变量</li>
+<li>在​​类扩展（Class Extension）中声明变量</li>
+<li>使用<code>​​readonly + readwrite​</code>进行控制</li>
+</ol>
+<ul>
+<li><p>​类扩展例子:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">// Person.h（公开头文件）</span><br><span class="line">@interface Person : NSObject</span><br><span class="line">// 这里不放私有属性</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">// Person.m（私有实现）</span><br><span class="line">@interface Person ()</span><br><span class="line">@property (nonatomic, copy) NSString *privateName;  // 私有属性</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation Person</span><br><span class="line">// 内部可以访问 self.privateName 或 _privateName</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>​​readonly&#x2F;readwrite​例子:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// Person.h</span><br><span class="line">@interface Person : NSObject</span><br><span class="line">@property (nonatomic, copy, readonly) NSString *name;  // 对外只读</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">// Person.m</span><br><span class="line">@interface Person ()</span><br><span class="line">@property (nonatomic, copy, readwrite) NSString *name;  // 内部可读写</span><br><span class="line">@end</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="property参数"><a href="#property参数" class="headerlink" title="@property参数"></a>@property参数</h3><p>使用<code>@property</code>声明变量的时候，是可以携带参数，如：<code>property(参数1，参数2，参数3)</code> ，常见参数和使用方式：</p>
+<ul>
+<li><code>atomic、nonatomic</code>  : 声明变量的原子性</li>
+<li><code>assign、retain</code>     : 声明变量的内存管理方式，<code>assign</code>用于值类型，不持有对象不做引用计数。<code>retain</code>用于引用类型，持有对象​​，赋值时会自动 retain，释放时会自动 release。</li>
+<li><code>strong、weak</code>       : 强弱指针</li>
+<li><code>readwrite、readonly</code>: 变量的读写权限控制</li>
+</ul>
+<blockquote>
+<p><code>retain</code>在 ​​ARC 下已被 <code>strong</code>取代​​，不推荐使用，而弱引用也不推荐声明为<code>assign</code>，而是用<code>weak</code>替代。<br><code>@property</code>生成的默认方法是以<code>_</code>开头，而如果在.m文件再使用<code>@synthesize</code>定义这个变量，则可以不以<code>_</code>开头</p>
+</blockquote>
+<h2 id="类的构造方法"><a href="#类的构造方法" class="headerlink" title="类的构造方法"></a>类的构造方法</h2><p>标准的构造方法定义<code>模版</code>有两种方法，分别为使用<code>instanceType</code>或者<code>id</code>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">//方式一</span><br><span class="line">-(instanceType)init&#123;</span><br><span class="line">    self = [super init];</span><br><span class="line">    if(self)&#123;</span><br><span class="line">        // init something.</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return self;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//方式er</span><br><span class="line">-(id)init&#123;</span><br><span class="line">    self = [super init];</span><br><span class="line">    if(self)&#123;</span><br><span class="line">        // init something.</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return self;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意在OC中，初始化可能会失败，所以必须判断父类是否初始化成功<br><code>instanceType</code>:代表当前类型对象为当前类，可以作为返回值类型。<br><code>id</code>: 任意类型，由于oc语言中，id类型的实例对象本质存放的是对象的类地址，所以可以用id定义任意类类型，并在程序运行的时候指向最终的对象。</p>
+</blockquote>
+<h3 id="自定义构造方法"><a href="#自定义构造方法" class="headerlink" title="自定义构造方法"></a>自定义构造方法</h3><p>使用<code>instanceType</code>可以自定义构造方法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">-(instanceType)initWithName:(NSString *) name&#123;</span><br><span class="line">    if(self = [super init])&#123;</span><br><span class="line">        self.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return self;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- 使用</span><br><span class="line"> [[XXX alloc] initWithName:@&quot;xxx&quot;];</span><br></pre></td></tr></table></figure>
+
+<h2 id="协议"><a href="#协议" class="headerlink" title="协议"></a>协议</h2><p>oc中的协议类似Java中的接口约定，另外他还可以在协议中添加&lt;&gt;声明，进行对协议的扩展</p>
+<p>协议定义：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">@protocol 名称 &lt;扩展协议&gt;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+
+<p>协议实现：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">@interface 类名 &lt;协议名称&gt;</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="struct"><a href="#struct" class="headerlink" title="struct"></a>struct</h2><p>结构定义</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">struct date</span><br><span class="line">&#123;</span><br><span class="line">    int month;</span><br><span class="line">    int day;</span><br><span class="line">    int year;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>结构使用：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">struct date purchaseDate;</span><br></pre></td></tr></table></figure>
+<p>结构初始化方式：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">方式一：</span><br><span class="line">struct date purchaseDate = &#123; 1, 2 ,3&#125;;</span><br><span class="line"></span><br><span class="line">方式二：</span><br><span class="line">struct date purchaseDate;</span><br><span class="line">purchaseDate.month = 8;</span><br><span class="line">purchaseDate.day = 1;</span><br><span class="line">purchaseDate.year = 2025;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>结构定义和变量定义可以一起</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">struct date</span><br><span class="line">&#123;</span><br><span class="line">    int month;</span><br><span class="line">    int day;</span><br><span class="line">    int year;</span><br><span class="line">&#125; purchaseDate;</span><br></pre></td></tr></table></figure>
+<p>还能进行初始化</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">struct date</span><br><span class="line">&#123;</span><br><span class="line">    int month;</span><br><span class="line">    int day;</span><br><span class="line">    int year;</span><br><span class="line">&#125; purchaseDate = &#123; 1,2,3&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="函数指针"><a href="#函数指针" class="headerlink" title="函数指针"></a>函数指针</h2><p>例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//定义</span><br><span class="line">void (*setter)(id, SEL, BOOL)</span><br><span class="line"></span><br><span class="line">//使用</span><br><span class="line">SEL selector = @selector(description:);</span><br><span class="line">setter(father1, selector, YES);</span><br></pre></td></tr></table></figure>
+
+<p>说明：</p>
+<ul>
+<li>void : 返回值</li>
+<li>(*setter) : 指针，指针名称为setter</li>
+<li>(id, SEL, BOOL): 函数参数</li>
+</ul>
+<h2 id="typedef"><a href="#typedef" class="headerlink" title="typedef"></a>typedef</h2><p><code>typedef</code>可以给已经存在的类型起一个别名</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">typdef int Counter;</span><br></pre></td></tr></table></figure>
+<p>后续使用<code>Counter</code>就是一个int类型;</p>
+<h2 id="枚举定义"><a href="#枚举定义" class="headerlink" title="枚举定义"></a>枚举定义</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">typdef enum&#123;</span><br><span class="line">    [枚举] = 默认值(int)</span><br><span class="line">&#125; [枚举名称]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//示例</span><br><span class="line">typedef enum &#123;</span><br><span class="line">    UserGenderMale,    // 默认从 0 开始</span><br><span class="line">    UserGenderFemale,</span><br><span class="line">    UserGenderUnknown</span><br><span class="line">&#125; UserGender;</span><br><span class="line"></span><br><span class="line">// 使用</span><br><span class="line">UserGender gender = UserGenderMale;</span><br></pre></td></tr></table></figure>
+
+<h2 id="异常捕获"><a href="#异常捕获" class="headerlink" title="异常捕获"></a>异常捕获</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">@try&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">@catch(NSException *ex)</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">@finally&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>c语言的异常无法处理</p>
+</blockquote>
+<h2 id="block"><a href="#block" class="headerlink" title="block"></a>block</h2><ul>
+<li><p>声明block的语法格式</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">返回类型(^block变量名)(参数);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>定义block的语法格式</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">^返回类型(参数)&#123;</span><br><span class="line">    //代码段</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>例子1</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">//声明了一个名为myblock1的block变量</span><br><span class="line">void (^myblock1)(int);</span><br><span class="line"></span><br><span class="line">//变量赋值</span><br><span class="line">myblock1 = ^void(int num)&#123;</span><br><span class="line">    NSLog(@&quot;myblock 代码段执行 %d&quot;,num);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">//block的调用</span><br><span class="line">myblock1(100);</span><br><span class="line"></span><br><span class="line">//当没有参数的时候可以进行简写</span><br><span class="line">void (^myblock1)(void);</span><br><span class="line"></span><br><span class="line">myblock1 = ^(void)&#123;</span><br><span class="line">    NSLog(@&quot;myblock 代码段执行&quot;);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">myblock1();</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>例子2</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">//completion为block类型的参数</span><br><span class="line">- (void)performActionWithCompletion:(void (^)(NSString *result))completion &#123;</span><br><span class="line">    // 执行一些操作</span><br><span class="line">    NSString *result = @&quot;Operation completed!&quot;;</span><br><span class="line">    </span><br><span class="line">    // 调用传入的 Block</span><br><span class="line">    if (completion) &#123;</span><br><span class="line">        completion(result);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="宏"><a href="#宏" class="headerlink" title="宏"></a>宏</h2><p>在Objective-C中，宏定义是一种预处理器指令，用于定义常量、简化代码或创建条件编译的代码块。宏以 <code>#define</code> 开头，可以用于<code>替换文本</code>或<code>定义函数</code>的宏。</p>
+<h3 id="常量宏和函数宏"><a href="#常量宏和函数宏" class="headerlink" title="常量宏和函数宏"></a>常量宏和函数宏</h3><p>可以使用宏定义来创建常量，这在代码中避免了硬编码的值。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">//常量宏定义</span><br><span class="line">#define kAppName @&quot;MyApp&quot;</span><br><span class="line">#define kMaxRetries 3</span><br><span class="line"></span><br><span class="line">//函数宏定义</span><br><span class="line">#define SQUARE(x) ((x) * (x))</span><br><span class="line"></span><br><span class="line">//使用常量宏</span><br><span class="line">NSString *appName = kAppName;</span><br><span class="line">int maxRetries = kMaxRetries;</span><br><span class="line"></span><br><span class="line">//使用函数宏</span><br><span class="line">y = SQUARE(3);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>宏定义的时候，如果是多行，则需要保证<font color=#c7254e>每行都以<code>\</code>结尾</font>, 如下:<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#define kSubscribeErr(code)                                                    \</span><br><span class="line">if (code != 0) &#123;                                                             \</span><br><span class="line">[subscriber                                                                \</span><br><span class="line">sendError:[NSError                                                     \</span><br><span class="line">errorWithDomain:[SRCallingViewModel errorDomain]         \</span><br><span class="line">code:code                                     \</span><br><span class="line">userInfo:@&#123;NSLocalizedDescriptionKey : @&quot;&quot;&#125;]];    \</span><br><span class="line">return;                                                                    \</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="宏的使用陷阱"><a href="#宏的使用陷阱" class="headerlink" title="宏的使用陷阱"></a>宏的使用陷阱</h3><p>存在如下定义的宏：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#define SQUARE(X) X * X</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>使用1：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">y = SQUARE(3);</span><br><span class="line">//输出结果为9</span><br></pre></td></tr></table></figure>
+
+<p>使用2:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">y = SQUARE(3+1);</span><br><span class="line">//输出结果为7, 因为替换宏之后变量为：`y = 3+1 * 3 + 1;`</span><br></pre></td></tr></table></figure>
+
+<p>如果要保证输入的参数正确以平方计算，应该要将宏定义为如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#define SQUARE(X) ((X) * (X))</span><br></pre></td></tr></table></figure>
+
+<h3 id="条件编译"><a href="#条件编译" class="headerlink" title="条件编译"></a>条件编译</h3><p>宏可以用于条件编译，以便根据特定条件包含或排除代码块。这在多平台开发或调试时特别有用。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#ifdef DEBUG</span><br><span class="line">    #define NSLog(...) NSLog(__VA_ARGS__) // 在调试模式下使用 NSLog</span><br><span class="line">#else</span><br><span class="line">    #define NSLog(...) // 在发布模式下不输出日志</span><br><span class="line">#endif</span><br></pre></td></tr></table></figure>
+
+<h3 id="反响定义"><a href="#反响定义" class="headerlink" title="反响定义"></a>反响定义</h3><p><code>#undef</code> </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#undef name</span><br></pre></td></tr></table></figure>
+<p>消除之前定义的宏,后续无法再使用name这个宏，编译会报错</p>
+<h3 id="宏的使用示例"><a href="#宏的使用示例" class="headerlink" title="宏的使用示例"></a>宏的使用示例</h3><p>以下是一个完整的示例，展示了宏的不同用法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">#import &lt;Foundation/Foundation.h&gt;</span><br><span class="line"></span><br><span class="line">// 常量宏</span><br><span class="line">#define kAppName @&quot;MyApp&quot;</span><br><span class="line">#define kMaxUsers 100</span><br><span class="line"></span><br><span class="line">// 函数-like 宏</span><br><span class="line">#define SQUARE(x) ((x) * (x))</span><br><span class="line"></span><br><span class="line">int main(int argc, const char * argv[]) &#123;</span><br><span class="line">    @autoreleasepool &#123;</span><br><span class="line">        // 使用常量宏</span><br><span class="line">        NSLog(@&quot;App Name: %@&quot;, kAppName);</span><br><span class="line">        NSLog(@&quot;Max Users: %d&quot;, kMaxUsers);</span><br><span class="line">        </span><br><span class="line">        // 使用函数-like 宏</span><br><span class="line">        int value = 5;</span><br><span class="line">        NSLog(@&quot;Square of %d: %d&quot;, value, SQUARE(value));</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://dongdian455.github.io">何方神圣tolife</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://dongdian455.github.io/2025/11/14/blogs-main/IOS/Object-C%E5%9F%BA%E7%A1%80/">https://dongdian455.github.io/2025/11/14/blogs-main/IOS/Object-C%E5%9F%BA%E7%A1%80/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://dongdian455.github.io" target="_blank">ReturnTolife</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="/img/blog_avatar.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2025/11/14/blogs-main/foundation/%E9%9F%B3%E9%A2%91%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/" title="录音基础概念"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">录音基础概念</div></div></a></div><div class="next-post pull-right"><a href="/2025/05/13/blogs-main/IOS/IOS_AutoLayout/" title="IOS_AutoLayout"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">IOS_AutoLayout</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/blog_avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">何方神圣tolife</div><div class="author-info__description">这是我的博客网站</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">37</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">13</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/DongDian455"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">不积跬步，无以至千里</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#OC%E4%B8%8EC%E8%AF%AD%E8%A8%80%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-number">1.</span> <span class="toc-text">OC与C语言的关系</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E5%85%B3%E9%94%AE%E5%AD%97"><span class="toc-number">2.</span> <span class="toc-text">常见关键字</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#import"><span class="toc-number">2.1.</span> <span class="toc-text">import</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#class"><span class="toc-number">2.2.</span> <span class="toc-text">@class</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#autoreleasepool"><span class="toc-number">2.3.</span> <span class="toc-text">@autoreleasepool</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#static"><span class="toc-number">2.4.</span> <span class="toc-text">static</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#selector"><span class="toc-number">2.5.</span> <span class="toc-text">selector</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E7%89%B9%E6%80%A7"><span class="toc-number">3.</span> <span class="toc-text">其他特性</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Foundation%E6%A1%86%E6%9E%B6"><span class="toc-number">3.1.</span> <span class="toc-text">Foundation框架</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NSString"><span class="toc-number">3.2.</span> <span class="toc-text">NSString</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#nill%E5%92%8CNULL"><span class="toc-number">3.3.</span> <span class="toc-text">nill和NULL</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E6%9E%84%E4%BD%93%E4%B8%8E%E7%B1%BB%E7%9A%84%E8%AE%BF%E9%97%AE%E9%80%9F%E5%BA%A6"><span class="toc-number">3.4.</span> <span class="toc-text">结构体与类的访问速度</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%82%B9%E8%AF%AD%E6%B3%95"><span class="toc-number">3.5.</span> <span class="toc-text">点语法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%A9%E5%B1%95"><span class="toc-number">3.6.</span> <span class="toc-text">扩展</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sizeof%E5%87%BD%E6%95%B0"><span class="toc-number">3.7.</span> <span class="toc-text">sizeof函数</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AF%AD%E6%B3%95"><span class="toc-number">4.</span> <span class="toc-text">语法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B1%BB%E7%9A%84%E5%A3%B0%E6%98%8E%E5%92%8C%E5%AE%9A%E4%B9%89"><span class="toc-number">4.1.</span> <span class="toc-text">类的声明和定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B1%BB%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-number">4.2.</span> <span class="toc-text">类的方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B1%BB%E6%96%B9%E6%B3%95%E4%B8%8E%E5%AE%9E%E4%BE%8B%E6%96%B9%E6%B3%95"><span class="toc-number">4.2.1.</span> <span class="toc-text">类方法与实例方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B1%BB%E7%9A%84%E6%96%B9%E6%B3%95%E8%AE%BF%E9%97%AE%E9%99%90%E5%88%B6"><span class="toc-number">4.2.2.</span> <span class="toc-text">类的方法访问限制</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B1%BB%E7%9A%84%E5%8F%98%E9%87%8F"><span class="toc-number">4.3.</span> <span class="toc-text">类的变量</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B1%BB%E5%8F%98%E9%87%8F%E7%9A%84%E8%AE%BF%E9%97%AE%E4%BF%AE%E9%A5%B0%E7%AC%A6"><span class="toc-number">4.3.1.</span> <span class="toc-text">类变量的访问修饰符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#property%E5%8F%82%E6%95%B0"><span class="toc-number">4.3.2.</span> <span class="toc-text">@property参数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B1%BB%E7%9A%84%E6%9E%84%E9%80%A0%E6%96%B9%E6%B3%95"><span class="toc-number">4.4.</span> <span class="toc-text">类的构造方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%9E%84%E9%80%A0%E6%96%B9%E6%B3%95"><span class="toc-number">4.4.1.</span> <span class="toc-text">自定义构造方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%8F%E8%AE%AE"><span class="toc-number">4.5.</span> <span class="toc-text">协议</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#struct"><span class="toc-number">4.6.</span> <span class="toc-text">struct</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88"><span class="toc-number">4.7.</span> <span class="toc-text">函数指针</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#typedef"><span class="toc-number">4.8.</span> <span class="toc-text">typedef</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9E%9A%E4%B8%BE%E5%AE%9A%E4%B9%89"><span class="toc-number">4.9.</span> <span class="toc-text">枚举定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%82%E5%B8%B8%E6%8D%95%E8%8E%B7"><span class="toc-number">4.10.</span> <span class="toc-text">异常捕获</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#block"><span class="toc-number">4.11.</span> <span class="toc-text">block</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%8F"><span class="toc-number">4.12.</span> <span class="toc-text">宏</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E9%87%8F%E5%AE%8F%E5%92%8C%E5%87%BD%E6%95%B0%E5%AE%8F"><span class="toc-number">4.12.1.</span> <span class="toc-text">常量宏和函数宏</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%8F%E7%9A%84%E4%BD%BF%E7%94%A8%E9%99%B7%E9%98%B1"><span class="toc-number">4.12.2.</span> <span class="toc-text">宏的使用陷阱</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9D%A1%E4%BB%B6%E7%BC%96%E8%AF%91"><span class="toc-number">4.12.3.</span> <span class="toc-text">条件编译</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%8D%E5%93%8D%E5%AE%9A%E4%B9%89"><span class="toc-number">4.12.4.</span> <span class="toc-text">反响定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%8F%E7%9A%84%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="toc-number">4.12.5.</span> <span class="toc-text">宏的使用示例</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/11/14/blogs-main/foundation/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BC%96%E7%A0%81/" title="常见计算机编码方式">常见计算机编码方式</a><time datetime="2025-11-14T02:52:30.079Z" title="发表于 2025-11-14 10:52:30">2025-11-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/11/14/blogs-main/foundation/%E6%97%B6%E9%97%B4%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/" title="时间基础概念">时间基础概念</a><time datetime="2025-11-14T02:52:30.079Z" title="发表于 2025-11-14 10:52:30">2025-11-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/11/14/blogs-main/foundation/%E9%9F%B3%E9%A2%91%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/" title="录音基础概念">录音基础概念</a><time datetime="2025-11-14T02:52:30.079Z" title="发表于 2025-11-14 10:52:30">2025-11-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/11/14/blogs-main/IOS/Object-C%E5%9F%BA%E7%A1%80/" title="Object-C基础">Object-C基础</a><time datetime="2025-11-14T02:52:30.071Z" title="发表于 2025-11-14 10:52:30">2025-11-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/05/13/blogs-main/IOS/IOS_AutoLayout/" title="IOS_AutoLayout">IOS_AutoLayout</a><time datetime="2025-05-13T03:01:41.032Z" title="发表于 2025-05-13 11:01:41">2025-05-13</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By 何方神圣tolife</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>(() => {
+  const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaid.length === 0) return
+  const runMermaid = () => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+    Array.from($mermaid).forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+      const mermaidID = 'mermaid-' + index
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+
+      const renderV10 = () => {
+        renderFn.then(({svg}) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svg)
+        })
+      }
+
+      const renderV9 = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      typeof renderFn === 'string' ? renderV9(renderFn) : renderV10()
+    })
+  }
+
+  const loadMermaid = () => {
+    window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+  }
+
+  btf.addModeChange('mermaid', runMermaid)
+
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script></div><div class="aplayer no-destroy" data-id="2101853004" data-server="netease" data-type="song" data-fixed="true" data-autoplay="true" data-lrctype="-1"> </div><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="false"></script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-show-text.min.js" data-mobile="false" data-text="return,to,life" data-fontsize="15px" data-random="false" async="async"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"superSample":2,"width":300,"height":600,"position":"right","hOffset":-40,"vOffset":-100},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false});</script></body></html>
