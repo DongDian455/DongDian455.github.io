@@ -1,0 +1,322 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Compose_SnapshotThreadLocal | ReturnTolife</title><meta name="author" content="何方神圣tolife"><meta name="copyright" content="何方神圣tolife"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="ThreadLocal回顾1. 核心作用 数据隔离：为每个线程提供独立的变量副本，无需加锁即可实现线程安全（以空间换时间）。 上下文透传：在同一线程的深层方法调用链中隐式传递数据（如 TraceId、UserContext）。  2. 底层结构 数据存放在 Thread 内部，而非 ThreadLocal 对象中。   Thread ──持有──&gt; ThreadLocalMap ──包含──">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Compose_SnapshotThreadLocal">
+<meta property="og:url" content="https://dongdian455.github.io/2026/09/03/blogs-main/Android/Compose_SnapshotThreadLocal/index.html">
+<meta property="og:site_name" content="ReturnTolife">
+<meta property="og:description" content="ThreadLocal回顾1. 核心作用 数据隔离：为每个线程提供独立的变量副本，无需加锁即可实现线程安全（以空间换时间）。 上下文透传：在同一线程的深层方法调用链中隐式传递数据（如 TraceId、UserContext）。  2. 底层结构 数据存放在 Thread 内部，而非 ThreadLocal 对象中。   Thread ──持有──&gt; ThreadLocalMap ──包含──">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://dongdian455.github.io/img/blog_avatar.png">
+<meta property="article:published_time" content="2026-09-03T10:00:59.885Z">
+<meta property="article:modified_time" content="2026-09-04T00:58:02.163Z">
+<meta property="article:author" content="何方神圣tolife">
+<meta property="article:tag" content="Compose">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://dongdian455.github.io/img/blog_avatar.png"><link rel="shortcut icon" href="/img/blog_avatar.png"><link rel="canonical" href="https://dongdian455.github.io/2026/09/03/blogs-main/Android/Compose_SnapshotThreadLocal/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Compose_SnapshotThreadLocal',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2026-09-04 08:58:02'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load',() => { preloader.endLoading() })
+
+  if (false) {
+    document.addEventListener('pjax:send', () => { preloader.initLoading() })
+    document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+  }
+})()</script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/blog_avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">42</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">15</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="ReturnTolife"><span class="site-name">ReturnTolife</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">Compose_SnapshotThreadLocal</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-09-03T10:00:59.885Z" title="发表于 2026-09-03 18:00:59">2026-09-03</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-09-04T00:58:02.163Z" title="更新于 2026-09-04 08:58:02">2026-09-04</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Android/">Android</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Compose_SnapshotThreadLocal"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="post-content" id="article-container"><h1 id="ThreadLocal回顾"><a href="#ThreadLocal回顾" class="headerlink" title="ThreadLocal回顾"></a>ThreadLocal回顾</h1><h2 id="1-核心作用"><a href="#1-核心作用" class="headerlink" title="1. 核心作用"></a>1. 核心作用</h2><ul>
+<li><strong>数据隔离</strong>：为每个线程提供独立的变量副本，无需加锁即可实现线程安全（以空间换时间）。</li>
+<li><strong>上下文透传</strong>：在同一线程的深层方法调用链中隐式传递数据（如 <code>TraceId</code>、<code>UserContext</code>）。</li>
+</ul>
+<h2 id="2-底层结构"><a href="#2-底层结构" class="headerlink" title="2. 底层结构"></a>2. 底层结构</h2><blockquote>
+<p><strong>数据存放在 <code>Thread</code> 内部，而非 <code>ThreadLocal</code> 对象中。</strong></p>
+</blockquote>
+<ul>
+<li><strong>Thread</strong> ──持有──&gt; <strong>ThreadLocalMap</strong> ──包含──&gt; <strong>Entry[]</strong></li>
+<li><strong>Entry</strong>：<code>Key</code> 为对 <code>ThreadLocal</code> 的<strong>弱引用</strong>；<code>Value</code> 为实际存放的数据（<strong>强引用</strong>）。<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Thread (当前线程)</span><br><span class="line">  └── threadLocals: ThreadLocalMap</span><br><span class="line">        └── table: Entry[] (散列表数组)</span><br><span class="line">              ├── Entry -&gt; Key: WeakReference&lt;ThreadLocal A&gt;, Value: UserContext A</span><br><span class="line">              └── Entry -&gt; Key: WeakReference&lt;ThreadLocal B&gt;, Value: Connection B</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="3-核心-API"><a href="#3-核心-API" class="headerlink" title="3. 核心 API"></a>3. 核心 API</h2><ul>
+<li><code>set(T value)</code>：以当前 <code>ThreadLocal</code> 为 Key，存入当前线程的 Map 中。</li>
+<li><code>get()</code>：从当前线程的 Map 中提取对应的 Value。</li>
+<li><code>remove()</code>：清理当前线程 Map 中对应的 Entry（<strong>使用完毕必须调用</strong>）。<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">fun get(): T &#123;</span><br><span class="line">    // 1. 获取当前 CPU 正运行在哪个线程上</span><br><span class="line">    val currentThread = Thread.currentThread() </span><br><span class="line"></span><br><span class="line">    // 2. 拿到这个线程对象内部【自己专属】的 Map（threadLocals）</span><br><span class="line">    val map = currentThread.threadLocals </span><br><span class="line"></span><br><span class="line">    // 3. 以当前 ThreadLocal 实例作为 Key，从【当前线程自己的 Map】里取值</span><br><span class="line">    return map.get(this) </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="4-内存泄漏与解决方案"><a href="#4-内存泄漏与解决方案" class="headerlink" title="4. 内存泄漏与解决方案"></a>4. 内存泄漏与解决方案</h2><ul>
+<li><strong>原因</strong>：<code>ThreadLocal</code> 被 GC 回收后，<code>Key</code> 变为 <code>null</code>；但线程池中的长生存期线程依然<strong>强引用</strong>着 <code>Value</code>，导致无用数据无法回收。  </li>
+<li><strong>规范</strong>：使用完后必须在 <code>finally</code> 块中调用 <code>remove()</code> 显式清理。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    userLocal.set(user);</span><br><span class="line">    process();</span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">    userLocal.remove(); <span class="comment">// 防止内存泄漏与线程池脏数据污染</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="SnapshotThreadLocal"><a href="#SnapshotThreadLocal" class="headerlink" title="SnapshotThreadLocal"></a>SnapshotThreadLocal</h1><h2 id="1-核心设计理念"><a href="#1-核心设计理念" class="headerlink" title="1. 核心设计理念"></a>1. 核心设计理念</h2><p><code>SnapshotThreadLocal</code>是一个轻量级、无锁的线程局部存储容器，其核心设计思想可以概括为：<code>AtomicReference（原子引用）+ 不可变的升序并行数组（ThreadMap）+ Copy-on-Write（写时复制）</code>。</p>
+<blockquote>
+<p>设计精妙之处：ThreadMap 是不可变的，一旦创建，其内部的数据就永远不会被修改。这意味着多线程同时读取 ThreadMap 时，绝对不需要加锁，也不用担心读到中途被破坏的脏数据。</p>
+</blockquote>
+<h2 id="2-内部数据结构"><a href="#2-内部数据结构" class="headerlink" title="2. 内部数据结构"></a>2. 内部数据结构</h2><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">SnapshotThreadLocal</span><br><span class="line">  └── map: AtomicReference&lt;ThreadMap&gt;</span><br><span class="line">        └── ThreadMap (不可变对象)</span><br><span class="line">              ├── keys: LongArray      [10, 20, 30]  (按 Thread.id 升序排列)</span><br><span class="line">              └── values: Array&lt;Any?&gt;  [V1, V2, V3]  (与 keys 1:1 对应)</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-内部读取原理（get-机制）"><a href="#3-内部读取原理（get-机制）" class="headerlink" title="3. 内部读取原理（get() 机制）"></a>3. 内部读取原理（<code>get()</code> 机制）</h2><p>当在某个线程中调用 <code>get()</code> 时，执行流程极其高效：</p>
+<ol>
+<li><strong>获取当前线程 ID</strong>：调用 <code>Thread.currentThread().id</code>，拿到一个 <code>long</code> 类型的线程唯一标识。</li>
+<li><strong>获取当前 Map 实例</strong>：直接通过 <code>map.get()</code> 从 <code>AtomicReference</code> 中取出当前不可变的 <code>ThreadMap</code>（无锁、无等待）。</li>
+<li><strong>升序数组二分查找</strong>：<br>在 <code>ThreadMap.keys</code>（<code>long[]</code>）上使用标准的二分查找算法（Binary Search），寻找 <code>Thread.id</code> 所在的索引位置 $i$：<ul>
+<li>若找到 <code>i&gt;=0</code>，直接返回 <code>values[i]</code>。</li>
+<li>若未找到，返回 <code>null</code>。</li>
+</ul>
+</li>
+</ol>
+<h3 id="读取设计的内部优势"><a href="#读取设计的内部优势" class="headerlink" title="读取设计的内部优势"></a>读取设计的内部优势</h3><ul>
+<li><strong>零内存分配（Zero Allocation）</strong>：整个读取过程不需要 <code>new</code> 任何对象，对垃圾回收（GC）零负担。</li>
+<li><strong>极速寻址</strong>：在现代 CPU 架构下，对连续内存的原生数组（<code>long[]</code>）进行极小规模的二分查找，CPU 缓存命中率极高，指令执行极其迅速。</li>
+</ul>
+<hr>
+<h2 id="4-内部写入与清理原理（set-value-节点移除机制）"><a href="#4-内部写入与清理原理（set-value-节点移除机制）" class="headerlink" title="4. 内部写入与清理原理（set(value) &#x2F; 节点移除机制）"></a>4. 内部写入与清理原理（<code>set(value)</code> &#x2F; 节点移除机制）</h2><p>当在某个线程中调用 <code>set(value)</code> 时，由于 <code>ThreadMap</code> 是不可变的，内部采用 <strong>写时复制（Copy-on-Write）</strong> 与 <strong>CAS 自旋重试</strong> 策略：</p>
+<ol>
+<li><strong>读取当前状态</strong>：获取当前线程 ID (<code>targetId</code>) 和 <code>AtomicReference</code> 中最新的 <code>oldMap</code>。</li>
+<li>**构建全新的 <code>ThreadMap</code>**：<ul>
+<li><strong>情况 A（更新）</strong>：若 <code>targetId</code> 已存在于 <code>oldMap.keys</code> 中：<ul>
+<li>若 <code>value != null</code>，复制一份旧数组，仅将对应索引位置的 <code>values</code> 替换为新值（长度保持 $N$）。</li>
+<li>若 <code>value == null</code>，触发<strong>缩容逻辑</strong>，创建一个长度为 $N - 1$ 的新数组，将当前线程的数据彻底剔除。</li>
+</ul>
+</li>
+<li><strong>情况 B（新增）</strong>：若 <code>targetId</code> 不存在：<ul>
+<li>若 <code>value == null</code>，无需处理，直接返回原 Map。</li>
+<li>若 <code>value != null</code>，创建一个长度为 $N + 1$ 的新数组，将旧数据复制过来，并将 <code>targetId</code> <strong>按升序插入</strong>到正确的位置，生成一个新的 <code>newMap</code>。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>CAS 原子替换</strong>：<br>调用 <code>map.compareAndSet(oldMap, newMap)</code>：<ul>
+<li><strong>成功</strong>：新 Map 挂载成功，写入或清理完成。</li>
+<li><strong>失败</strong>：说明在构建新 Map 的微秒级时间差内，有其他线程抢先更新了 <code>map</code>。此时进入 <code>do-while</code> 自旋，读取最新的 <code>oldMap</code> 并重试上述步骤。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="与-Java-标准-ThreadLocal-机制对比"><a href="#与-Java-标准-ThreadLocal-机制对比" class="headerlink" title="与 Java 标准 ThreadLocal 机制对比"></a>与 Java 标准 ThreadLocal 机制对比</h2><table>
+<thead>
+<tr>
+<th align="left">比较维度</th>
+<th align="left">Java 标准 <code>ThreadLocal</code></th>
+<th align="left">Compose <code>SnapshotThreadLocal</code></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>底层数据结构</strong></td>
+<td align="left">开放寻址法散列表（<code>ThreadLocalMap</code>）+ <code>WeakReference</code></td>
+<td align="left">不可变升序原生数组（<code>long[]</code> + <code>Object[]</code>）</td>
+</tr>
+<tr>
+<td align="left"><strong>读取性能与算法</strong></td>
+<td align="left">哈希寻址（需处理哈希冲突与废弃 WeakReference 节点）</td>
+<td align="left"><strong>无锁二分查找</strong>（在极小线程集下指令少、CPU Cache 命中率高）</td>
+</tr>
+<tr>
+<td align="left"><strong>内存与 GC 消耗</strong></td>
+<td align="left">依赖弱引用防止泄漏，增加 GC 追踪负担</td>
+<td align="left"><strong>无弱引用</strong>，结构紧凑，读取阶段<strong>零对象分配（Zero Allocation）</strong></td>
+</tr>
+<tr>
+<td align="left"><strong>更新与写入机制</strong></td>
+<td align="left">原位修改（In-place），频繁扩容与再哈希开销</td>
+<td align="left"><strong>写时复制（Copy-on-Write） + CAS 自旋</strong>，写慢读极快</td>
+</tr>
+<tr>
+<td align="left"><strong>适用场景定位</strong></td>
+<td align="left">通用并发场景，支持任意线程规模与频繁读写</td>
+<td align="left"><strong>极端高频读、极低频写、小规模线程池</strong>（如 Compose 快照渲染系统）</td>
+</tr>
+</tbody></table>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://dongdian455.github.io">何方神圣tolife</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://dongdian455.github.io/2026/09/03/blogs-main/Android/Compose_SnapshotThreadLocal/">https://dongdian455.github.io/2026/09/03/blogs-main/Android/Compose_SnapshotThreadLocal/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://dongdian455.github.io" target="_blank">ReturnTolife</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Compose/">Compose</a></div><div class="post_share"><div class="social-share" data-image="/img/blog_avatar.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2026/09/04/blogs-main/Android/Compose_%E5%88%B7%E6%96%B0%E5%8E%9F%E7%90%86/" title="Compose_刷新原理"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Compose_刷新原理</div></div></a></div><div class="next-post pull-right"><a href="/2026/04/27/blogs-main/Person/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_%E5%AE%9A%E6%8A%95%E5%8D%81%E5%B9%B4%E8%B4%A2%E5%8A%A1%E8%87%AA%E7%94%B1/" title="读书笔记_定投十年财务自由"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">读书笔记_定投十年财务自由</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2026/09/04/blogs-main/Android/Compose_%E5%88%B7%E6%96%B0%E5%8E%9F%E7%90%86/" title="Compose_刷新原理"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-04</div><div class="title">Compose_刷新原理</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/blog_avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">何方神圣tolife</div><div class="author-info__description">这是我的博客网站</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">42</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">15</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/DongDian455"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">不积跬步，无以至千里</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#ThreadLocal%E5%9B%9E%E9%A1%BE"><span class="toc-number">1.</span> <span class="toc-text">ThreadLocal回顾</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%A0%B8%E5%BF%83%E4%BD%9C%E7%94%A8"><span class="toc-number">1.1.</span> <span class="toc-text">1. 核心作用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%BA%95%E5%B1%82%E7%BB%93%E6%9E%84"><span class="toc-number">1.2.</span> <span class="toc-text">2. 底层结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%A0%B8%E5%BF%83-API"><span class="toc-number">1.3.</span> <span class="toc-text">3. 核心 API</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E4%B8%8E%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-number">1.4.</span> <span class="toc-text">4. 内存泄漏与解决方案</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#SnapshotThreadLocal"><span class="toc-number">2.</span> <span class="toc-text">SnapshotThreadLocal</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%A0%B8%E5%BF%83%E8%AE%BE%E8%AE%A1%E7%90%86%E5%BF%B5"><span class="toc-number">2.1.</span> <span class="toc-text">1. 核心设计理念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%86%85%E9%83%A8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="toc-number">2.2.</span> <span class="toc-text">2. 内部数据结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%86%85%E9%83%A8%E8%AF%BB%E5%8F%96%E5%8E%9F%E7%90%86%EF%BC%88get-%E6%9C%BA%E5%88%B6%EF%BC%89"><span class="toc-number">2.3.</span> <span class="toc-text">3. 内部读取原理（get() 机制）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%BB%E5%8F%96%E8%AE%BE%E8%AE%A1%E7%9A%84%E5%86%85%E9%83%A8%E4%BC%98%E5%8A%BF"><span class="toc-number">2.3.1.</span> <span class="toc-text">读取设计的内部优势</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%86%85%E9%83%A8%E5%86%99%E5%85%A5%E4%B8%8E%E6%B8%85%E7%90%86%E5%8E%9F%E7%90%86%EF%BC%88set-value-%E8%8A%82%E7%82%B9%E7%A7%BB%E9%99%A4%E6%9C%BA%E5%88%B6%EF%BC%89"><span class="toc-number">2.4.</span> <span class="toc-text">4. 内部写入与清理原理（set(value) &#x2F; 节点移除机制）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8E-Java-%E6%A0%87%E5%87%86-ThreadLocal-%E6%9C%BA%E5%88%B6%E5%AF%B9%E6%AF%94"><span class="toc-number">2.5.</span> <span class="toc-text">与 Java 标准 ThreadLocal 机制对比</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/09/04/blogs-main/Android/Compose_%E5%88%B7%E6%96%B0%E5%8E%9F%E7%90%86/" title="Compose_刷新原理">Compose_刷新原理</a><time datetime="2026-09-04T00:58:02.163Z" title="发表于 2026-09-04 08:58:02">2026-09-04</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/09/03/blogs-main/Android/Compose_SnapshotThreadLocal/" title="Compose_SnapshotThreadLocal">Compose_SnapshotThreadLocal</a><time datetime="2026-09-03T10:00:59.885Z" title="发表于 2026-09-03 18:00:59">2026-09-03</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/04/27/blogs-main/Person/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0_%E5%AE%9A%E6%8A%95%E5%8D%81%E5%B9%B4%E8%B4%A2%E5%8A%A1%E8%87%AA%E7%94%B1/" title="读书笔记_定投十年财务自由">读书笔记_定投十年财务自由</a><time datetime="2026-04-27T09:42:46.066Z" title="发表于 2026-04-27 17:42:46">2026-04-27</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/04/27/blogs-main/foundation/%E5%B8%B8%E8%A7%81%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%9C%BA%E6%9E%84/" title="常见计算机架构">常见计算机架构</a><time datetime="2026-04-27T09:42:30.684Z" title="发表于 2026-04-27 17:42:30">2026-04-27</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/04/27/blogs-main/IOS/Object-C%E5%9F%BA%E7%A1%80/" title="Object-C基础">Object-C基础</a><time datetime="2026-04-27T09:17:11.242Z" title="发表于 2026-04-27 17:17:11">2026-04-27</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2026 By 何方神圣tolife</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>(() => {
+  const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaid.length === 0) return
+  const runMermaid = () => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+    Array.from($mermaid).forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+      const mermaidID = 'mermaid-' + index
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+
+      const renderV10 = () => {
+        renderFn.then(({svg}) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svg)
+        })
+      }
+
+      const renderV9 = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      typeof renderFn === 'string' ? renderV9(renderFn) : renderV10()
+    })
+  }
+
+  const loadMermaid = () => {
+    window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+  }
+
+  btf.addModeChange('mermaid', runMermaid)
+
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script></div><div class="aplayer no-destroy" data-id="2101853004" data-server="netease" data-type="song" data-fixed="true" data-autoplay="true" data-lrctype="-1"> </div><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="false"></script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-show-text.min.js" data-mobile="false" data-text="return,to,life" data-fontsize="15px" data-random="false" async="async"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"superSample":2,"width":300,"height":600,"position":"right","hOffset":-40,"vOffset":-100},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false});</script></body></html>
